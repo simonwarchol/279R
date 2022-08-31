@@ -1,0 +1,15 @@
+/*Via https://stackoverflow.com/questions/50649275/use-checkbox-for-list-style-type-in-unordered-list-in-html
+Remove the bullet point from a list so i can show a checkbox*/
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.completed {
+    text-decoration: line-through;
+
+}
+
+.trash{
+    text-decoration: none !important;
+}
