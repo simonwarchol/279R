@@ -4,7 +4,7 @@
 ### How to Run
 Serve the `HW0` directory using any http-server and access `index.html`.
 
-Example:
+###### Example:
 ```
 npm i -g http-server
 http-server .
