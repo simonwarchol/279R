@@ -6,10 +6,21 @@ ul {
 }
 
 .completed {
-    text-decoration: line-through;
-
+    text-decoration: line-through !important;
 }
 
-.trash{
-    text-decoration: none !important;
+
+/*Hide newlines in editable section
+via https://stackoverflow.com/questions/425274/prevent-line-paragraph-breaks-in-contenteditable*/
+.task-text br {
+    display: none
+}
+/*Space the tasks on lines with buttons at end and text at beginning*/
+.task {
+    display: flex;
+    align-items: start;
+    justify-content: space-between;
+    flex-direction: row;
+    margin: 2px 4px;
+    width: 40vw;
 }

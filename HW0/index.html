@@ -7,13 +7,18 @@
     <link rel="stylesheet" href="hw0.css">
 </head>
 <body>
-
-<h2>To-Do List</h2>
-<input type="text" id="new_item" name="new_item">
-<label for="new_item"><button type="button" id="add_button">Add</button></label>
-
-<ul id="list">
-</ul>
+<!--Parent container-->
+<div id="container">
+    <h2>To-Do List</h2>
+    <!-- Here users can add new elements to list-->
+    <input type="text" id="new_item" name="new_item">
+    <label for="new_item">
+        <button type="button" id="add_button" title="Add Task">Add</button>
+    </label>
+    <!--Empty list -->
+    <ul id="list">
+    </ul>
+</div>
 <script src="hw0.js"></script>
 </body>
 </html>
