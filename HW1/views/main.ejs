@@ -1,0 +1,42 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>hw1</title>
+    <link rel="stylesheet" href="static/hw1.css">
+</head>
+<body>
+<!--Parent container-->
+<div id="container">
+    <h2>To-Do List</h2>
+    <!-- Here users can add new elements to list-->
+    <form action="/add">
+        <input type="text" id="new_item" name="new_item">
+        <label for="new_item">
+            <input type="submit" value="Add"/>
+        </label>
+    </form>
+    <!--Empty list -->
+    <ul id="list">
+        <% tasks.forEach(function(task) { %>
+            <li>
+                <div class="task">
+                    <div>
+                        <!--Crosses out item-->
+                        <input type="checkbox" class="checkbox">
+                        <span class="task-text"><%= task.text %></span>
+                    </div>
+                    <div>
+                        <!--Links to the server route to delete the task by its id-->
+                        <a href="/delete/<%= task.id %>">
+                            <button type="button" class="delete-button" title="Delete Task">️🗑</button>
+                        </a>
+                    </div>
+                </div>
+            </li>
+        <% }); %>
+    </ul>
+</div>
+</body>
+</html>
