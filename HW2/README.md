@@ -2,7 +2,7 @@
 
 ## Simon Warchol
 
-**Note:** Much of the template HTML is from my HW0 submission
+**Note:** This submission follows the following tutorial: https://daily-dev-tips.com/posts/build-a-todo-list-app-with-flutter/
 
 ### How to Run
 
