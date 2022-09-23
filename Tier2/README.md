@@ -13,6 +13,7 @@
     - `npm run dev`)
 3) Navigate to `http://127.0.0.1:5173/` in your browser (check the terminal for the correct port if there are issues)
 
+4) **Note:** This site is intended to be displayed in full-screen on a desktop/laptop. It is not optimized for mobile.
 ### Key Distinguishing Characteristics 
 In doodle, user availability is visualized and input as a grid, with each row representing a participant and each column representing a time slot. 
 The user can then click on a cell checkbox to indicate their availability for that time slot.
