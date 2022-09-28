@@ -19,6 +19,7 @@
   },
   "type": "module",
   "dependencies": {
-    "svelte-adapter-firebase": "^0.14.4"
+    "@sveltejs/adapter-static": "^1.0.0-next.43",
+    "firebase": "^9.10.0"
   }
 }
