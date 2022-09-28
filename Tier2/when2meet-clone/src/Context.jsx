@@ -8,11 +8,13 @@ export const AppContext = React.createContext(null);
 export const ContextWrapper = (props) => {
 
     const [participants, setParticipants] = useState([]);
+    const [timeBlocks, setTimeBlocks] = useState([]);
 
     return (
         <AppContext.Provider value={
             {
-                participants, setParticipants
+                participants, setParticipants,
+                timeBlocks, setTimeBlocks
             }}>
             {props.children}
         </AppContext.Provider>

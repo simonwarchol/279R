@@ -6,6 +6,7 @@ import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
 import {Checkbox, Container} from "@mui/material";
 import {AppContext} from "./Context.jsx";
+import UserTime from "./UserTime.jsx";
 
 // Each time block contains the following information
 class TimeBlock {
@@ -33,7 +34,6 @@ function App() {
     // Having these in the global state insures the values update accordingly
     const context = useContext(AppContext);
 
-    const [timeBlocks, setTimeBlocks] = useState([]);
 
     // This runs on init
     useEffect(() => {
@@ -63,14 +63,14 @@ function App() {
         });
         // Add the "you" participant to the top of the list with false for all availability
         tempParticipants = [new Participant('You', Array(tbIndex).fill(false)), ...tempParticipants]
-        setTimeBlocks(tempTimeBlocks);
+        context.setTimeBlocks(tempTimeBlocks);
         context.setParticipants(tempParticipants);
     }, [])
 
     useEffect(() => {
         // Make sure variables are initialized
-        if (!context.participants || !context.participants.length || !timeBlocks || !timeBlocks.length) return;
-        let tmpTimeBlocks = [...timeBlocks]
+        if (!context.participants || !context.participants.length || !context.timeBlocks || !context.timeBlocks.length) return;
+        let tmpTimeBlocks = [...context.timeBlocks]
         // Initialize availability for each timeblock depending on randomized availablity of participants
         context.participants.forEach((participant) => {
             participant.availabilityList.forEach((available, i) => {
@@ -79,15 +79,9 @@ function App() {
                 }
             })
         })
-        setTimeBlocks(tmpTimeBlocks);
+        context.setTimeBlocks(tmpTimeBlocks);
     }, [context.participants])
 
-    // This is the function that runs when a checkbox is clicked which changes the count value for the time block
-    const updateYourSelection = (i, checked) => {
-        const tmpTimeBlocks = [...timeBlocks];
-        tmpTimeBlocks[i].availabilityCount += checked ? 1 : -1;
-        setTimeBlocks(tmpTimeBlocks);
-    }
 
     return (
         <div className="App">
@@ -112,7 +106,7 @@ function App() {
                 {/*    MUI grid with two columns*/}
                 <Grid container spacing={2}>
                     <Grid item xs={6}>
-                        Simon
+                        <UserTime/>
                     </Grid>
                     <Grid item xs={6}>
                         Test
