@@ -21,9 +21,6 @@ const GroupTime = (props) => {
             height: 600,
             margins: 50,
         };
-        let initialClickAvailable = true;
-        const unavailableColor = "#ffdedf";
-        const availableColor = "#3a9917";
 
         dimensions.containerWidth = dimensions.width - dimensions.margins * 2;
         dimensions.containerHeight = dimensions.height - dimensions.margins * 2;
@@ -34,6 +31,7 @@ const GroupTime = (props) => {
             .classed("group-availability", true)
             .attr("width", dimensions.width)
             .attr("height", dimensions.height);
+        // remove container on potential rerender
         svg.select('.container').remove()
         const container = svg
             .append("g")
@@ -46,7 +44,7 @@ const GroupTime = (props) => {
             .attr("y", 20)
             .attr("text-anchor", "middle");
 
-
+        // Add legend
         const colorScale = d3.scaleOrdinal()
             .domain([0, 1, 2, 3, 4])
             .range(["#fdffff", "#cce5c0", "#9bca83", "#68b147", "#369917"]);
@@ -60,8 +58,7 @@ const GroupTime = (props) => {
         svg.select(".color-legend")
             .call(legend);
 
-
-        let indexCount = 0;
+        // Groups time blocks by day
         const timeBlockDays = _.chain(context.timeBlocks)
             .groupBy(d => `${d.dayOfWeek} ${d.month} ${d.day}`)
             .entries()
@@ -76,6 +73,7 @@ const GroupTime = (props) => {
             .range([0, 400])
 
         const drawDays = () => {
+            // Each day is a group
             container.selectAll('.group-days')
                 .data(timeBlockDays, d => d[0])
                 .join('g')
@@ -83,6 +81,7 @@ const GroupTime = (props) => {
                 .attr('transform', d => `translate(${dayScale(d[0])},100)`)
                 .each((dd, ii, g_list, h) => {
                     let g = d3.select(g_list[ii]);
+                    // Add day label
                     g.selectAll('.group-title')
                         .data([dd[0]])
                         .join('text')
@@ -93,7 +92,7 @@ const GroupTime = (props) => {
                         .attr('font-size', 15)
                         .attr('fill', 'black')
                         .text(d => d)
-
+                    // Add hour labels
                     g.selectAll('.group-time-block-rect')
                         .data(dd[1])
                         .join('rect')
@@ -104,11 +103,10 @@ const GroupTime = (props) => {
                         .attr('width', dayScale.step() / 2)
                         .attr('stroke', 'black')
                         .attr('fill', d => colorScale(d.availabilityCount))
+                    // Add hour legend
                     g.call(d3.axisLeft(hourScale).tickFormat(d3.format("d")).ticks(6).tickSize(0))
                 })
         }
-
-
         drawDays()
 
     }, [svgRef.current, context.timeBlocks, context.isLoaded]); // redraw chart if data changes
