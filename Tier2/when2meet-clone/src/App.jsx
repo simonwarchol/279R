@@ -1,12 +1,12 @@
 import {useContext, useEffect, useState} from 'react'
-import reactLogo from './assets/react.svg'
 import './App.css'
 import Box from '@mui/material/Box';
-import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
-import {Checkbox, Container} from "@mui/material";
 import {AppContext} from "./Context.jsx";
 import UserTime from "./UserTime.jsx";
+import GroupTime from "./GroupTime.jsx";
+import _ from 'lodash';
+
 
 // Each time block contains the following information
 class TimeBlock {
@@ -70,7 +70,11 @@ function App() {
     useEffect(() => {
         // Make sure variables are initialized
         if (!context.participants || !context.participants.length || !context.timeBlocks || !context.timeBlocks.length) return;
-        let tmpTimeBlocks = [...context.timeBlocks]
+        let tmpTimeBlocks = _.cloneDeep(context.timeBlocks)
+            .map(d => {
+                d.availabilityCount = 0;
+                return d;
+            })
         // Initialize availability for each timeblock depending on randomized availablity of participants
         context.participants.forEach((participant) => {
             participant.availabilityList.forEach((available, i) => {
@@ -81,6 +85,12 @@ function App() {
         })
         context.setTimeBlocks(tmpTimeBlocks);
     }, [context.participants])
+
+    useEffect(() => {
+        if (!context.participants || !context.participants.length || !context.timeBlocks || !context.timeBlocks.length) return;
+        if (!context.isLoaded) context.setIsLoaded(true);
+
+    }, [context.timeBlocks])
 
 
     return (
@@ -109,7 +119,7 @@ function App() {
                         <UserTime/>
                     </Grid>
                     <Grid item xs={6}>
-                        Test
+                        <GroupTime/>
                     </Grid>
                 </Grid>
             </Box>

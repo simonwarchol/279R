@@ -18,6 +18,8 @@ const UserTime = (props) => {
             height: 600,
             margins: 50,
         };
+        let initialClickAvailable = true;
+
 
         const unavailableColor = "#ffdedf";
         const availableColor = "#3a9917";
@@ -69,45 +71,93 @@ const UserTime = (props) => {
             .attr("y", 40)
             .attr("text-anchor", "middle")
 
-
-        const brushingRect = svg.append("rect")
+        const brushingRect = container.append("rect")
             .attr("x", 0)
             .attr("y", 0)
             .attr("width", 0)
             .attr("height", 0)
-            .attr("fill", "red")
+            .attr("fill", "none")
+
+
+        let dragStart = {}
+
+        // Code below suggested by colab
+        const doRectanglesOverlap = (r1, r2) => {
+            return !(r2.left > r1.right ||
+                r2.right < r1.left ||
+                r2.top > r1.bottom ||
+                r2.bottom < r1.top);
+        }
+
 
         const drag = d3.drag()
             .on("start", (e) => {
-                console.log("drag start", e)
-
+                const event = d3.pointer(e, container.node());
+                dragStart = {
+                    x: event[0],
+                    y: event[1],
+                }
             })
             .on("drag", (e) => {
-                console.log("drag", e)
+                const d3Event = d3.pointer(e, container.node());
+                const event = {x: d3Event[0], y: d3Event[1]}
                 d3.select(brushingRect.node())
-                    .attr("x", e.subject.x > e.x ? e.x : e.subject.x)
-                    .attr("y", e.subject.y > e.y ? e.y : e.subject.y)
-                    .attr("width", e.subject.x > e.x ? e.subject.x - e.x : e.x - e.subject.x)
-                    .attr("height", e.subject.y > e.y ? e.subject.y - e.y : e.y - e.subject.y)
-
+                    .attr("x", dragStart.x > event.x ? event.x : dragStart.x)
+                    .attr("y", dragStart.y > event.y ? event.y : dragStart.y)
+                    .attr("width", dragStart.x > event.x ? dragStart.x - event.x : event.x - dragStart.x)
+                    .attr("height", dragStart.y > event.y ? dragStart.y - event.y : event.y - dragStart.y)
+                let brushingRectDom = brushingRect.node().getBoundingClientRect()
                 d3.selectAll('.time-block-rect')
                     .each((dat, i, rects) => {
-                        const rect = d3.select(rects[i])
-                        const rectX = _.toNumber(rect.attr("x")) + dayScale(`${dat.dayOfWeek} ${dat.month} ${dat.day}`)
-                        const rectY = _.toNumber(rect.attr("y")) + hourScale(dat.start)
-                        console.log('asdf', rectX, rectY)
+                        const timeRectDom = d3.select(rects[i]).node().getBoundingClientRect();
+                        if (doRectanglesOverlap(timeRectDom, brushingRectDom)) {
+                            dat.inDrag = true
+                        } else {
+                            delete dat.inDrag;
+                        }
                     })
+                drawDays();
             })
             .on("end", () => {
-                drawDays();
-                console.log('drag end')
-            })
-        drag(svg);
+                brushingRect.x = brushingRect.y = brushingRect.width = brushingRect.height = null;
+                d3.selectAll('.time-block-rect')
+                    .each((dat, i, rects) => {
+                        if (dat.inDrag && initialClickAvailable) {
+                            dat.availabilityCount = 1;
+                            delete dat.inDrag;
+                        } else if (dat.inDrag && !initialClickAvailable) {
+                            dat.availabilityCount = 0;
+                            delete dat.inDrag;
+                        }
+                    })
+                d3.select(brushingRect.node())
+                    .attr("x", 0)
+                    .attr("y", 0)
+                    .attr("width", 0)
+                    .attr("height", 0)
 
-        let initialClickAvailable = true;
+                // Update the context
+                drawDays();
+
+                let tmpParticipants = _.cloneDeep(context.participants);
+                const flattenedTimeBlock = _.chain(timeBlockDays)
+                    .map(d => d[1].map(dd => dd))
+                    .flatten()
+                    .value()
+
+                flattenedTimeBlock.forEach((dd, i) => {
+                    tmpParticipants[0].availabilityList[i] = dd.availabilityCount === 1;
+                })
+                console.log('tmp,', tmpParticipants)
+                context.setParticipants(tmpParticipants);
+
+
+            })
+        drag(container);
 
 
         const timeBlockDays = _.chain(context.timeBlocks)
+            .cloneDeep()
             .groupBy(d => `${d.dayOfWeek} ${d.month} ${d.day}`)
             .entries()
             .map(d => {
@@ -121,14 +171,12 @@ const UserTime = (props) => {
 
         const dayScale = d3.scalePoint()
             .domain(timeBlockDays.map(d => d[0]))
-            .range([10, 400])
+            .range([0, 400])
 
         const hourScale = d3.scaleLinear()
             .domain([1, 6])
             .range([0, 400])
 
-
-        console.log('timeBlockDays', timeBlockDays)
         const drawDays = () => {
             // container.selectAll('.days').remove()
             container.selectAll('.days')
@@ -150,7 +198,7 @@ const UserTime = (props) => {
                         .text(d => d)
 
 
-                    g.selectAll('rect')
+                    g.selectAll('.time-block-rect')
                         .data(dd[1])
                         .join('rect')
                         .classed('time-block-rect', true)
@@ -160,22 +208,26 @@ const UserTime = (props) => {
                         .attr('width', dayScale.step() / 2)
                         .attr('stroke', 'black')
                         .attr('fill', d => {
-                            if (d.availabilityCount === 0) return unavailableColor
-                            return availableColor
+                            if (d.inDrag && initialClickAvailable) {
+                                return availableColor
+                            } else if (d.inDrag && !initialClickAvailable) {
+                                return unavailableColor;
+                            } else if (d.availabilityCount === 0) {
+                                return unavailableColor
+                            } else {
+                                return availableColor
+                            }
                         })
                         .on('mousedown', (e, d) => {
                             if (d.availabilityCount === 0) {
                                 initialClickAvailable = true
-                                d.availabilityCount = 1
+                                // d.availabilityCount = 1
                             } else {
                                 initialClickAvailable = false
-                                d.availabilityCount = 0
+                                // d.availabilityCount = 0
                             }
                         })
-                        .attr('fill', d => {
-                            if (d.availabilityCount === 0) return unavailableColor
-                            return availableColor
-                        })
+
                     g.call(d3.axisLeft(hourScale).tickFormat(d3.format("d")).ticks(6).tickSize(0))
 
                 })
@@ -184,7 +236,7 @@ const UserTime = (props) => {
 
         drawDays()
 
-    }, [svgRef.current, context.timeBlocks]); // redraw chart if data changes
+    }, [svgRef.current, context.isLoaded]); // redraw chart if data changes
 
     return <svg ref={svgRef}/>;
 };

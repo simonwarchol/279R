@@ -89,13 +89,23 @@ function App() {
 
     return (
         <div className="App">
-            <h1>Doodle Clone</h1>
+            <Box
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                minHeight="10vh"
+                maxHeight="10vh"
+            >
+                <h1>Doodle Clone</h1>
+            </Box>
             {/* I'm using MUI here for styling*/}
             <Box
                 display="flex"
                 justifyContent="center"
                 alignItems="center"
-                minHeight="100vh"
+                minHeight="90vh"
+                maxHeight="90vh"
+
             >
                 {/*Rows are date cards and checkboxes for participants*/}
                 <Grid container spacing={0} justifyContent="center" direction="column">

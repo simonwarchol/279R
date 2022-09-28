@@ -9,12 +9,14 @@ export const ContextWrapper = (props) => {
 
     const [participants, setParticipants] = useState([]);
     const [timeBlocks, setTimeBlocks] = useState([]);
+    const [isLoaded, setIsLoaded] = useState(false);
 
     return (
         <AppContext.Provider value={
             {
                 participants, setParticipants,
-                timeBlocks, setTimeBlocks
+                timeBlocks, setTimeBlocks,
+                isLoaded, setIsLoaded
             }}>
             {props.children}
         </AppContext.Provider>
