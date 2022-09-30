@@ -1,16 +1,21 @@
-[Tier 1] Programming HW2: Make a To-Do App with Flutter
+[Tier 1] Programming HW4: Make a To-Do App with Svelte and Firebase
 
 ## Simon Warchol
 
-**Note:** This submission follows the following tutorial: https://daily-dev-tips.com/posts/build-a-todo-list-app-with-flutter/
+**Note:** This submission follows the following
+tutorials: https://www.youtube.com/playlist?list=PLm_Qt4aKpfKiGbdjaHdOpry6Neza0etxZ
 
 ### How to Run
 
-1) Install [Flutter](https://flutter.dev/)
-2) From the `todo` directory run `flutter run`
+1) Visit https://todo-app-126f3.web.app
 
 
-### Reflection 
-What are the significant software concepts that this combination of technologies has that each previous set of technologies did not? Or that they handle significantly differently?
+### Reflection
 
-Each of the technologies we have used thus far offers some form of generalizable UI components. HTML offers primitive lists,headers,etc. NodeJS opens access to libraries such as MUI (which I also used w/ flutter) that offer much richer components and hence increased generalizability. Flutter takes this to an entirely different level in that these components are not bound to the web, and can be used across in mobile/web and desktop contexts across OSs. A key takeaway from our readings in this class has been the need to have consistency and follow norms in user interfaces and providing such consistency across devices is a huge advantage. That being said, working in dart and without the benefit of the npm ecosystem can be limiting for large / ambitious projects and may require a certain element of reinventing the wheel. Moreover, an entirely different suite of technologies (e.g. electron) exist that port web development into native non-web settings while still maintaining the benefits of node and other frameworks (react, etc.). In either case, the ability to not have to re-write code as you move from platform to platform is a huge advantage.
+What are the significant software concepts that this combination of technologies has that each previous set of
+technologies did not? Or that they handle significantly differently?
+
+Svelte: Svelte is similar to other model-view-viewmodel frameworks (React, Angular, etc.) which abstrats the visual components, data bindings, and logic of webapps into discrete components, though there is no hard requirement one follows this design structure. In Svelte, it is easy to define a singular component, which contains HTML, CSS, and Javascript in a single file while easily integrating other Node packages. Svelte is distinctly different from these other approaches in that it is compiled, which reduces client-side computation. However, for small-scale webapps i can't notice any difference. 
+I prefer Svelte's design model more than React's (which i'm most familiar with), but would like to see it's ecosystem grow in size before I'd be willing to totally switch over.
+
+Firebase offers easy database access (as mongo was used in the previous tier1), but which a really nice GUI and documentation that makes it easy to integrate the db into your javascript app. It also offers an easy CLI for hosting. Thus, this is the first combination of techonologies wehre I've submimitted an actual website that has persistent data across users. I was really impressed by both.
