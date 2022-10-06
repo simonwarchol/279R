@@ -1,0 +1,43 @@
+<!--Via https://www.python-engineer.com/posts/flask-todo-app/-->
+<!DOCTYPE html>
+<html lang="en">
+<!--Baseline HTML Header-->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo App</title>
+</head>
+
+<body>
+
+<h1>To Do App</h1>
+<!--Basic form that takes a todo as text and makes a POST to the backend with the text-->
+<form action="/add" method="post">
+    <div>
+        <input type="text" name="title" placeholder="Enter Todo...">
+        <br>
+        <button type="submit">Add</button>
+    </div>
+</form>
+
+<hr>
+<!--Loop over list of todos from backend-->
+{% for todo in todo_list %}
+<!--If todo is complete display it normally-->
+{% if todo.complete == False %}
+<span>{{todo.title }}</span>
+<!--Otherwise cross through it-->
+{% else %}
+<span style="text-decoration: line-through">{{todo.title }}</span>
+
+
+{% endif %}
+<!--toggleComplete and Delete are GET requests to the backend which will return the new list array-->
+<a href="/toggle_complete/{{ todo.id }}">✅</a>
+<a href="/delete/{{ todo.id }}">🗑️</a>
+<br/>
+
+{% endfor %}
+</body>
+
+</html>
