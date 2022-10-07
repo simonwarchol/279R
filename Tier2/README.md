@@ -1,1 +1,1 @@
-Check each folder for a README
+Check each folder for an README.
