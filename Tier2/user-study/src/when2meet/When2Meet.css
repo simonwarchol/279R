@@ -1,0 +1,29 @@
+.App {
+    height: 100%;
+    width: 100%;
+}
+
+
+.time-block {
+    width: 70px;
+    margin: 10px 0;
+}
+
+.time-block * {
+    margin: 0;
+    padding: 1px 3px;
+    text-align: center;
+}
+
+.green {
+    background-color: #ccebc5;
+
+}
+
+.red {
+    background-color: #fbb4ae;
+}
+
+.blue {
+    background-color: #b3cde3;
+}

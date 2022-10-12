@@ -1,6 +1,5 @@
 import {useEffect, useState} from 'react'
-import reactLogo from './assets/react.svg'
-import './App.css'
+import './Doodle.css'
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
@@ -28,7 +27,7 @@ class Participant {
 }
 
 
-function App() {
+function Doodle() {
     // Having these in the global state insures the values update accordingly
     const [participants, setParticipants] = useState([]);
     const [timeBlocks, setTimeBlocks] = useState([]);
@@ -175,4 +174,4 @@ function App() {
     )
 }
 
-export default App
+export default Doodle
