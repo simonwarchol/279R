@@ -42,7 +42,7 @@ const UserTime = (props) => {
             .attr("transform", `translate(${dimensions.margins}, ${dimensions.margins})`);
         // Add Title
         container.append("text")
-            .text("Your Availability")
+            .text("You")
             .attr("x", 200)
             .attr("y", 20)
             .attr("text-anchor", "middle");

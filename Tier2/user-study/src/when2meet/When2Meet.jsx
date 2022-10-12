@@ -96,22 +96,10 @@ function When2Meet() {
     return (
         <div className="App">
             {/* I'm using MUI here for styling*/}
-
             <Box
                 display="flex"
                 justifyContent="center"
                 alignItems="center"
-                minHeight="10vh"
-                maxHeight="10vh"
-            >
-                <h1>When2Meet Clone</h1>
-            </Box>
-            <Box
-                display="flex"
-                justifyContent="center"
-                alignItems="center"
-                minHeight="90vh"
-                maxHeight="90vh"
             >
                 {/*    MUI grid with two columns*/}
                 <Grid container spacing={2}>

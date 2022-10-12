@@ -88,22 +88,14 @@ function Doodle() {
 
     return (
         <div className="App">
-            <Box
-                display="flex"
-                justifyContent="center"
-                alignItems="center"
-                minHeight="10vh"
-                maxHeight="10vh"
-            >
-                <h1>Doodle Clone</h1>
-            </Box>
+
             {/* I'm using MUI here for styling*/}
             <Box
                 display="flex"
                 justifyContent="center"
                 alignItems="center"
-                minHeight="90vh"
-                maxHeight="90vh"
+                minHeight="50vh"
+                maxHeight="50vh"
 
             >
                 {/*Rows are date cards and checkboxes for participants*/}
