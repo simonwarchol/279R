@@ -5,6 +5,7 @@ import {addDoc, collection} from "firebase/firestore";
 import db from "./Firebase.jsx";
 import _ from 'lodash';
 import {useNavigate} from "react-router-dom";
+import {useStopwatch} from "react-timer-hook";
 
 
 function Task1(props) {
@@ -12,15 +13,20 @@ function Task1(props) {
     const context = useContext(AppContext);
     // This will be called when the page is loaded or when the data changes
     const navigate = useNavigate();
+    const {
+        seconds
+    } = useStopwatch({autoStart: true});
+    const system = props.system;
 
 
     const submitTask1 = () => {
-        console.log(context.participants);
         const correctResponse = [true, false, true, false, false, false, true, false, false, false, false, true, true, true, false];
         const responses = context.participants[0].availabilityList;
         let resp = addDoc(collection(db, 'task1'), {
             responses: responses,
             correctResponse: correctResponse,
+            time: seconds,
+            system: system,
             uuid: _.toString(context.userId)
         });
         if (window.location.pathname === '/t1/w2m') {
