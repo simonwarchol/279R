@@ -24,9 +24,9 @@ function Task1(props) {
             uuid: _.toString(context.userId)
         });
         if (window.location.pathname === '/t1/w2m') {
-            navigate('/t1/doodle');
-        } else if (window.location.pathname === '/t1/doodle') {
             navigate('/t2/w2m');
+        } else if (window.location.pathname === '/t1/doodle') {
+            navigate('/t2/doodle');
         }
 
 

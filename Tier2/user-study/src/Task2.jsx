@@ -27,9 +27,9 @@ function Task2() {
         });
         inputRef.current.value = null;
         if (window.location.pathname === '/t2/w2m') {
-            navigate('/t2/doodle');
+            navigate('/w2mSurvey');
         } else if (window.location.pathname === '/t2/doodle') {
-            navigate('/thanks');
+            navigate('/doodleSurvey');
         }
     }
 

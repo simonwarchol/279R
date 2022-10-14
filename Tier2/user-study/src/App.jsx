@@ -7,6 +7,7 @@ import {BrowserRouter, Navigate, Route, Routes} from "react-router-dom";
 import {AppContext} from "./Context.jsx";
 import Grid from "@mui/material/Grid";
 import Task2 from "./Task2.jsx";
+import Survey from "./Survey.jsx";
 
 function App() {
     // Having these in the global state insures the values update accordingly
@@ -89,6 +90,17 @@ function App() {
                             <h1>Thank You</h1>
                         </>
                     }/>
+                    <Route path="/doodleSurvey" element={
+                        <>
+                            <Survey system={'doodle'}/>
+                        </>
+                    }/>
+                    <Route path="/w2mSurvey" element={
+                        <>
+                            <Survey system={'w2m'}/>
+                        </>
+                    }/>
+
                 </Routes>
             </BrowserRouter>
             {/* I'm using MUI here for styling*/}

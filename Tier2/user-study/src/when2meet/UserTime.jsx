@@ -102,6 +102,7 @@ const UserTime = (props) => {
                 }
             })
             .on("drag", (e) => {
+                console.log('in drag')
                 // converts mouse coordinates to svg coordinates
                 const d3Event = d3.pointer(e, container.node());
                 const event = {x: d3Event[0], y: d3Event[1]}
@@ -126,7 +127,30 @@ const UserTime = (props) => {
                 // Updates the time blocks
                 drawDays();
             })
-            .on("end", () => {
+            .on("end", (e) => {
+                console.log('dragend')
+                const d3Event = d3.pointer(e, container.node());
+                const event = {x: d3Event[0], y: d3Event[1]}
+                // Ternary operator makes top left point the x,y so width and height are always positive
+                d3.select(brushingRect.node())
+                    .attr("x", dragStart.x > event.x ? event.x : dragStart.x)
+                    .attr("y", dragStart.y > event.y ? event.y : dragStart.y)
+                    .attr("width", dragStart.x > event.x ? dragStart.x - event.x : event.x - dragStart.x)
+                    .attr("height", dragStart.y > event.y ? dragStart.y - event.y : event.y - dragStart.y)
+                // Gets location of box in screen coordinates
+                let brushingRectDom = brushingRect.node().getBoundingClientRect()
+                d3.selectAll('.time-block-rect')
+                    .each((dat, i, rects) => {
+                        // Gets location of time block in screen coordinates
+                        const timeRectDom = d3.select(rects[i]).node().getBoundingClientRect();
+                        if (doRectanglesOverlap(timeRectDom, brushingRectDom)) {
+                            dat.inDrag = true
+                        } else {
+                            delete dat.inDrag;
+                        }
+                    })
+                // Updates the time blocks
+                drawDays();
                 brushingRect.x = brushingRect.y = brushingRect.width = brushingRect.height = null;
                 d3.selectAll('.time-block-rect')
                     .each((dat, i, rects) => {
