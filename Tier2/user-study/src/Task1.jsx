@@ -44,7 +44,7 @@ function Task1(props) {
                 sx={{marginTop: '10px'}} variant="contained" size="large" onClick={submitTask1}>Submit</Button>
             </h2>
             <div>
-                Mon Jan 14 1pm - 2pm ⚫ Mon Jan 14 3pm - 4pm ⚫ Tue Jan 13 2pm - 3pm ⚫ Wed Jan 16 2pm - 3pm ⚫ Wed Jan
+                Mon Jan 14 1pm - 2pm ⚫ Mon Jan 14 3pm - 4pm ⚫ Tue Jan 15 2pm - 3pm ⚫ Wed Jan 16 2pm - 3pm ⚫ Wed Jan
                 16 3pm - 4pm ⚫ Wed Jan 16 4pm - 5pm
             </div>
 
