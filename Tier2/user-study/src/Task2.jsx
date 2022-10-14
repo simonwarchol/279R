@@ -9,9 +9,9 @@ function Task2() {
 
     return (
         <div style={{margin: '10px', padding: '10px'}}>
-            <h2>Ignoring "You", how many potential 1 hr meeting times exist in this 3-day time span?           </h2>
-            <TextField type={'number'} />
-             <Button
+            <h2>How many time blocks with 3 available people exist?</h2>
+            <TextField type={'number'}/>
+            <Button
                 sx={{marginTop: '10px'}} variant="contained" size="large">Submit</Button>
         </div>
     )

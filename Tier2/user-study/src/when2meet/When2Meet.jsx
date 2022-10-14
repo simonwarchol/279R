@@ -1,4 +1,4 @@
-import {useContext, useEffect, useState} from 'react'
+import {useContext, useEffect} from 'react'
 import './When2Meet.css'
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
@@ -30,7 +30,7 @@ class Participant {
 }
 
 
-function When2Meet() {
+function When2Meet(props) {
     // Having these in the global state insures the values update accordingly
     const context = useContext(AppContext);
 
@@ -103,12 +103,17 @@ function When2Meet() {
             >
                 {/*    MUI grid with two columns*/}
                 <Grid container spacing={2}>
-                    <Grid item xs={6}>
-                        <UserTime/>
-                    </Grid>
-                    <Grid item xs={6}>
-                        <GroupTime/>
-                    </Grid>
+                    {props.showYou && (
+                        <Grid item xs={6}>
+                            <UserTime/>
+                        </Grid>
+                    )}
+                    {props.showGroup && (
+
+                        <Grid item xs={6}>
+                            <GroupTime/>
+                        </Grid>
+                    )}
                 </Grid>
             </Box>
         </div>

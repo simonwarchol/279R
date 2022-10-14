@@ -3,7 +3,7 @@ import './App.css'
 import When2Meet from "./when2meet/When2Meet.jsx";
 import Doodle from "./doodle/Doodle.jsx";
 import Task1 from "./Task1.jsx";
-import {BrowserRouter, Route, Routes} from "react-router-dom";
+import {BrowserRouter, Navigate, Route, Routes} from "react-router-dom";
 import {AppContext} from "./Context.jsx";
 import Grid from "@mui/material/Grid";
 import Task2 from "./Task2.jsx";
@@ -17,6 +17,7 @@ function App() {
         <div className="App">
             <BrowserRouter>
                 <Routes>
+                    <Route path='/' element={<Navigate to="/t1/w2m"/>}/>
                     <Route path="/t1/w2m" element={<>
                         <Grid
                             container
@@ -28,59 +29,59 @@ function App() {
                                 <Task1/>
                             </Grid>
                             <Grid item xs={12}>
-                                <When2Meet/>
+                                <When2Meet showYou={true} showGroup={false}/>
                             </Grid>
                         </Grid>
                     </>}/>
                     <Route path="/t1/doodle" element={
                         <>
                             <Grid
-                            container
-                            direction="column"
-                            justifyContent="center"
-                            alignItems="center"
-                        >
-                            <Grid item xs={12}>
-                                <Task1/>
+                                container
+                                direction="column"
+                                justifyContent="center"
+                                alignItems="center"
+                            >
+                                <Grid item xs={12}>
+                                    <Task1/>
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <Doodle showYou={true} showGroup={false}/>
+                                </Grid>
                             </Grid>
-                            <Grid item xs={12}>
-                                <Doodle/>
-                            </Grid>
-                        </Grid>
                         </>
                     }/>
                     <Route path="/t2/doodle" element={
                         <>
                             <Grid
-                            container
-                            direction="column"
-                            justifyContent="center"
-                            alignItems="center"
-                        >
-                            <Grid item xs={12}>
-                                <Task2/>
+                                container
+                                direction="column"
+                                justifyContent="center"
+                                alignItems="center"
+                            >
+                                <Grid item xs={12}>
+                                    <Task2/>
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <Doodle showYou={false} showGroup={true}/>
+                                </Grid>
                             </Grid>
-                            <Grid item xs={12}>
-                                <Doodle/>
-                            </Grid>
-                        </Grid>
                         </>
                     }/>
                     <Route path="/t2/w2m" element={
                         <>
                             <Grid
-                            container
-                            direction="column"
-                            justifyContent="center"
-                            alignItems="center"
-                        >
-                            <Grid item xs={12}>
-                                <Task2/>
+                                container
+                                direction="column"
+                                justifyContent="center"
+                                alignItems="center"
+                            >
+                                <Grid item xs={12}>
+                                    <Task2/>
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <When2Meet showYou={false} showGroup={true}/>
+                                </Grid>
                             </Grid>
-                            <Grid item xs={12}>
-                                <When2Meet/>
-                            </Grid>
-                        </Grid>
                         </>
                     }/>
                 </Routes>

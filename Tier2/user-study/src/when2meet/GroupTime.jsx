@@ -1,4 +1,4 @@
-import React, {useRef, useEffect, useContext} from "react";
+import React, {useContext, useEffect, useRef} from "react";
 import * as d3 from "d3";
 import {AppContext} from "../Context.jsx";
 import _ from 'lodash';
@@ -47,16 +47,22 @@ const GroupTime = (props) => {
         // Add legend
         const colorScale = d3.scaleOrdinal()
             .domain([0, 1, 2, 3, 4])
-            .range(["#fdffff", "#cce5c0", "#9bca83", "#68b147", "#369917"]);
+            .range(["#fdffff", "#cce5c0", "#9bca83", "#68b147", "#369917"]);// Add legend
+        const displayColorScale = d3.scaleOrdinal()
+            .domain([0, 1, 2, 3])
+            .range(["#fdffff", "#bcddab", "#76bb55", "#349900"]);
         const legendContainer = svg.append("g")
             .attr("class", "color-legend")
             .attr("transform", "translate(300,80)");
         let legend = legendColor()
             .labelFormat(d3.format(".0f"))
             .orient('horizontal')
-            .scale(colorScale)
+            .scale(displayColorScale)
         svg.select(".color-legend")
             .call(legend);
+
+        svg.selectAll('rect.swatch')
+            .attr('stroke', 'black')
 
         // Groups time blocks by day
         const timeBlockDays = _.chain(context.timeBlocks)

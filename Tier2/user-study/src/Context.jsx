@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {initializeApp} from "firebase/app";
 import {getFirestore} from "firebase/firestore";
+import uuid from "react-uuid";
 
 
 export const AppContext = React.createContext(null);
@@ -14,22 +15,13 @@ export const ContextWrapper = (props) => {
     const [participants, setParticipants] = useState([]);
     const [timeBlocks, setTimeBlocks] = useState([]);
     const [isLoaded, setIsLoaded] = useState(false);
-    const firebaseConfig = {
-        apiKey: import.meta.env.VITE_API_KEY,
-        authDomain: import.meta.env.VITE_AUTH_DOMAIN,
-        projectId: import.meta.env.VITE_PROJECT_ID,
-        storageBucket: import.meta.env.VITE_STORAGE_BUCKET,
-        messagingSenderId: import.meta.env.VITE_MESSAGING_SENDER_ID,
-        appId: import.meta.env.VITE_APP_ID,
-        measurementId: import.meta.env.VITE_MEASUREMENT_ID
-    };
-    const [firebaseApp, setFirebaseApp] = useState(initializeApp(firebaseConfig));
-    const [db, setDb] = useState(null);
-
-    useEffect(() => {
-        if (!firebaseApp) return
-        setDb(getFirestore(firebaseApp));
-    }, [firebaseApp])
+    let _userId = localStorage.getItem("scheduleUuid")
+    if (!_userId) {
+        _userId = uuid();
+        localStorage.setItem("scheduleUuid", _userId);
+    }
+    const [userId, setUserId] = useState(_userId);
+    // console.log('userid',userId)
 
 
     return (
@@ -37,7 +29,8 @@ export const ContextWrapper = (props) => {
             {
                 participants, setParticipants,
                 timeBlocks, setTimeBlocks,
-                isLoaded, setIsLoaded
+                isLoaded, setIsLoaded,
+                userId, setUserId
             }}>
             {props.children}
         </AppContext.Provider>

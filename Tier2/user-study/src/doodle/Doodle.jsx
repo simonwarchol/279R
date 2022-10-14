@@ -1,9 +1,10 @@
-import {useEffect, useState} from 'react'
+import {useContext, useEffect} from 'react'
 import './Doodle.css'
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
-import {Checkbox, Container} from "@mui/material";
+import {Checkbox} from "@mui/material";
+import {AppContext} from "../Context.jsx";
 
 // Each time block contains the following information
 class TimeBlock {
@@ -27,11 +28,9 @@ class Participant {
 }
 
 
-function Doodle() {
+function Doodle(props) {
     // Having these in the global state insures the values update accordingly
-    const [participants, setParticipants] = useState([]);
-    const [timeBlocks, setTimeBlocks] = useState([]);
-
+    const context = useContext(AppContext);
     // This runs on init
     useEffect(() => {
         // Hard coding dates to the range of days and times below
@@ -60,30 +59,38 @@ function Doodle() {
         });
         // Add the "you" participant to the top of the list with false for all availability
         tempParticipants = [new Participant('You', Array(tbIndex).fill(false)), ...tempParticipants]
-        setTimeBlocks(tempTimeBlocks);
-        setParticipants(tempParticipants);
+        context.setTimeBlocks(tempTimeBlocks);
+        context.setParticipants(tempParticipants);
     }, [])
 
     useEffect(() => {
         // Make sure variables are initialized
-        if (!participants || !participants.length || !timeBlocks || !timeBlocks.length) return;
-        let tmpTimeBlocks = [...timeBlocks]
+        if (!context.participants || !context.participants.length || !context.timeBlocks || !context.timeBlocks.length) return;
+        let tmpTimeBlocks = [...context.timeBlocks]
+        tmpTimeBlocks = tmpTimeBlocks.map((tb) => {
+            tb.availabilityCount = 0;
+            return tb;
+        });
+        console.log(tmpTimeBlocks)
         // Initialize availability for each timeblock depending on randomized availablity of participants
-        participants.forEach((participant) => {
+        context.participants.forEach((participant) => {
             participant.availabilityList.forEach((available, i) => {
                 if (available) {
                     tmpTimeBlocks[i].availabilityCount += 1
                 }
             })
         })
-        setTimeBlocks(tmpTimeBlocks);
-    }, [participants])
+        context.setTimeBlocks(tmpTimeBlocks);
+    }, [context.participants])
 
     // This is the function that runs when a checkbox is clicked which changes the count value for the time block
     const updateYourSelection = (i, checked) => {
-        const tmpTimeBlocks = [...timeBlocks];
-        tmpTimeBlocks[i].availabilityCount += checked ? 1 : -1;
-        setTimeBlocks(tmpTimeBlocks);
+        let tmpParticipants = [...context.participants];
+        tmpParticipants[0].availabilityList[i] = checked;
+        context.setParticipants(tmpParticipants);
+        // const tmpTimeBlocks = [...context.timeBlocks];
+        // tmpTimeBlocks[i].availabilityCount += checked ? 1 : -1;
+        // context.setTimeBlocks(tmpTimeBlocks);
     }
 
     return (
@@ -106,7 +113,7 @@ function Doodle() {
                             <Paper className={'time-block'}>
                             </Paper>
                         </Grid>
-                        {timeBlocks && timeBlocks.map(block => {
+                        {context.timeBlocks && context.timeBlocks.map(block => {
                             return (
                                 <Grid item>
                                     {/*Display the date info*/}
@@ -123,18 +130,18 @@ function Doodle() {
                             )
                         })}
                     </Grid>
-                    {participants && participants.map((participant, i) => {
+                    {context.participants && context.participants.map((participant, i) => {
                         return (
                             <Grid container spacing={1} justifyContent="center" direction="row">
                                 <Grid item>
                                     {/*The first row if the "You" row which i highlight in blue*/}
-                                    {i === 0 &&
+                                    {i === 0 && props.showYou &&
                                         <Paper className={'time-block'}>
                                             <h3 className={'blue'}>{participant.name}</h3>
                                         </Paper>
                                     }
                                     {/*The other rows are the other participants*/}
-                                    {i !== 0 &&
+                                    {i !== 0 && props.showGroup &&
                                         <Paper className={'time-block'}>
                                             <h3>{participant.name}</h3>
                                         </Paper>
@@ -145,14 +152,14 @@ function Doodle() {
                                         <Grid item>
                                             <Paper className={'time-block'}>
                                                 {/* If "You", show a checkbox*/}
-                                                {i === 0 &&
+                                                {i === 0 && props.showYou &&
                                                     <Checkbox sx={{m: 0, p: 0}}
                                                               onChange={e => {
                                                                   updateYourSelection(j, e.target.checked);
                                                               }}/>}
                                                 {/*Otherwise show the availbility as x or check*/}
-                                                {i > 0 && time && <h3 className={'green'}>✔</h3>}
-                                                {i > 0 && !time && <h3 className={'red'}>✔</h3>}
+                                                {i > 0 && time && props.showGroup && <h3 className={'green'}>✔</h3>}
+                                                {i > 0 && !time && props.showGroup && <h3 className={'red'}>✔</h3>}
                                             </Paper>
                                         </Grid>
                                     )
