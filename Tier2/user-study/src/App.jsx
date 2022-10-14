@@ -84,6 +84,11 @@ function App() {
                             </Grid>
                         </>
                     }/>
+                    <Route path="/thanks" element={
+                        <>
+                            <h1>Thank You</h1>
+                        </>
+                    }/>
                 </Routes>
             </BrowserRouter>
             {/* I'm using MUI here for styling*/}

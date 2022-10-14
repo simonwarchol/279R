@@ -27,10 +27,6 @@ function Task1(props) {
             navigate('/t1/doodle');
         } else if (window.location.pathname === '/t1/doodle') {
             navigate('/t2/w2m');
-        } else if (window.location.pathname === '/t2/w2m') {
-            navigate('/t2/doodle');
-        } else if (window.location.pathname === '/t2/doodle') {
-            // navigate('/t2/doodle');
         }
 
 
