@@ -1,4 +1,4 @@
-import React, {useRef, useEffect, useContext} from "react";
+import React, {useContext, useEffect, useRef} from "react";
 import * as d3 from "d3";
 import {AppContext} from "../Context.jsx";
 import _ from 'lodash';
@@ -110,8 +110,16 @@ const UserTime = (props) => {
                 d3.select(brushingRect.node())
                     .attr("x", dragStart.x > event.x ? event.x : dragStart.x)
                     .attr("y", dragStart.y > event.y ? event.y : dragStart.y)
-                    .attr("width", dragStart.x > event.x ? dragStart.x - event.x : event.x - dragStart.x)
-                    .attr("height", dragStart.y > event.y ? dragStart.y - event.y : event.y - dragStart.y)
+                    .attr("width", () => {
+                        let width = dragStart.x > event.x ? dragStart.x - event.x : event.x - dragStart.x
+                        if (width < 1) width = 1
+                        return width
+                    })
+                    .attr("height", () => {
+                        let height = dragStart.y > event.y ? dragStart.y - event.y : event.y - dragStart.y
+                        if (height < 1) height = 1
+                        return height
+                    })
                 // Gets location of box in screen coordinates
                 let brushingRectDom = brushingRect.node().getBoundingClientRect()
                 d3.selectAll('.time-block-rect')
@@ -128,17 +136,26 @@ const UserTime = (props) => {
                 drawDays();
             })
             .on("end", (e) => {
-                console.log('dragend')
                 const d3Event = d3.pointer(e, container.node());
                 const event = {x: d3Event[0], y: d3Event[1]}
                 // Ternary operator makes top left point the x,y so width and height are always positive
                 d3.select(brushingRect.node())
                     .attr("x", dragStart.x > event.x ? event.x : dragStart.x)
                     .attr("y", dragStart.y > event.y ? event.y : dragStart.y)
-                    .attr("width", dragStart.x > event.x ? dragStart.x - event.x : event.x - dragStart.x)
-                    .attr("height", dragStart.y > event.y ? dragStart.y - event.y : event.y - dragStart.y)
+                    .attr("width", () => {
+                        let width = dragStart.x > event.x ? dragStart.x - event.x : event.x - dragStart.x
+                        if (width < 1) width = 1
+                        return width
+                    })
+                    .attr("height", () => {
+                        let height = dragStart.y > event.y ? dragStart.y - event.y : event.y - dragStart.y
+                        if (height < 1) height = 1
+                        return height
+                    })
                 // Gets location of box in screen coordinates
                 let brushingRectDom = brushingRect.node().getBoundingClientRect()
+                console.log('dragend', brushingRectDom)
+
                 d3.selectAll('.time-block-rect')
                     .each((dat, i, rects) => {
                         // Gets location of time block in screen coordinates
