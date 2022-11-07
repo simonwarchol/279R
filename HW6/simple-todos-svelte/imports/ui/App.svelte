@@ -1,5 +1,5 @@
 <script>
-    <!--    Import my DB-->
+    //   Import my DB 
     import {TasksCollection} from '../api/TasksCollection';
     // Import the individual task as a UI element
     import Task from './Task.svelte';
